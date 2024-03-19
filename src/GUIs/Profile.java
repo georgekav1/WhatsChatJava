@@ -2,11 +2,11 @@ package GUIs;
 import javax.swing.*;
 import java.awt.*;
 
-public class Contacts extends JFrame {
+public class Profile extends JFrame {
 	
 	private JPanel buttonPanel;
 	
-	public Contacts() {
+	public Profile() {
 		setTitle("WhatsChat");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 600);
@@ -21,23 +21,14 @@ public class Contacts extends JFrame {
 		setJMenuBar(menuBar);
 		
 		getContentPane().setLayout(new BorderLayout());
-		buttonPanel();
+		profilePanel();
 		add(buttonPanel, BorderLayout.NORTH);
 	}
 	
-	private void buttonPanel() {
+	private void profilePanel() {
 		 buttonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
 		    
-		 JButton btn1 = new JButton("Contact 1");
-		 JButton btn2 = new JButton("Contact 2");
-		    
-		 buttonPanel.add(btn1);
-		 buttonPanel.add(btn2);
-		 
-		 JButton btn3 = new JButton("Contact 3");
-		 JButton btn4 = new JButton("Contact 4");
-		    
-		 buttonPanel.add(btn3);
-		 buttonPanel.add(btn4);
+		 //fields stating name, phone number, etc.
 	}
 }
+

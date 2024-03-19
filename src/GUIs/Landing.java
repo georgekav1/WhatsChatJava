@@ -1,11 +1,8 @@
 package GUIs;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -49,16 +46,19 @@ public class Landing extends JFrame {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(title, gbc);
-
-
         
         JButton contacts = new JButton("Contacts");
-        
         panel.add(contacts);
-        JButton chats = new JButton("Chats");
         
+        JButton profile = new JButton("View/Edit Profile");
+        panel.add(Box.createHorizontalStrut(10));
+        panel.add(profile);
+        
+        JButton chats = new JButton("Chats");      
         panel.add(Box.createHorizontalStrut(10));
         panel.add(chats);
+        
+        
 	}
 	
 }

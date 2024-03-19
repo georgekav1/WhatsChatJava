@@ -1,6 +1,4 @@
-import javax.swing.*;
 import GUIs.*;
-import java.awt.FlowLayout;
 
 /**
  * The Main class contains the main method to start the application.
