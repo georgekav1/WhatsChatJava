@@ -1,43 +1,53 @@
 package GUIs;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Contacts extends JFrame {
-	
-	private JPanel buttonPanel;
-	
-	public Contacts() {
-		setTitle("WhatsChat");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(400, 600);
-		JMenuBar menuBar = new JMenuBar();
-		JMenu title = new JMenu("WhatsChat");
-		JMenu menu = new JMenu("Edit");
-		JMenuItem user = new JMenu("User");
-		menu.add(user);
-		menuBar.add(title);
-		menuBar.add(menu);
-		
-		setJMenuBar(menuBar);
-		
-		getContentPane().setLayout(new BorderLayout());
-		buttonPanel();
-		add(buttonPanel, BorderLayout.NORTH);
-	}
-	
-	private void buttonPanel() {
-		 buttonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
-		    
-		 JButton btn1 = new JButton("Contact 1");
-		 JButton btn2 = new JButton("Contact 2");
-		    
-		 buttonPanel.add(btn1);
-		 buttonPanel.add(btn2);
-		 
-		 JButton btn3 = new JButton("Contact 3");
-		 JButton btn4 = new JButton("Contact 4");
-		    
-		 buttonPanel.add(btn3);
-		 buttonPanel.add(btn4);
-	}
+    private JPanel buttonPanel;
+
+    public Contacts() {
+        setTitle("WhatsChat");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 600);
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu title = new JMenu("WhatsChat");
+        
+        JMenuItem home = new JMenuItem("Home");      
+
+        home.addActionListener(e -> returnToHome());
+      
+        title.add(home);
+        
+        menuBar.add(title);
+
+        setJMenuBar(menuBar);
+
+        getContentPane().setLayout(new BorderLayout());
+
+        JLabel staticLabel = new JLabel("Here are your Contacts:", SwingConstants.CENTER);
+        buttonPanel = new JPanel(new GridLayout(0, 1, 5, 5)); // Vertical layout for buttons
+        
+        // Add buttons or other components as needed
+        JButton btn1 = new JButton("John Doe");
+        JButton btn2 = new JButton("Alice");
+        JButton btn3 = new JButton("Bob");
+        JButton btn4 = new JButton("Emma");
+
+        buttonPanel.add(btn1);
+        buttonPanel.add(btn2);
+        buttonPanel.add(btn3);
+        buttonPanel.add(btn4);
+
+        getContentPane().add(staticLabel, BorderLayout.NORTH);
+        getContentPane().add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
+    }
+
+    private void returnToHome() {
+        dispose(); 
+        Landing landingPage = new Landing();
+        landingPage.setVisible(true);
+    }
+    
 }
