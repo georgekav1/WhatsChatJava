@@ -1,12 +1,12 @@
-package GUIs;
+
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Contacts extends JFrame {
+public class ContactGUI extends JFrame {
     private JPanel buttonPanel;
 
-    public Contacts() {
+    public ContactGUI() {
         setTitle("WhatsChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 600);
@@ -46,7 +46,7 @@ public class Contacts extends JFrame {
 
     private void returnToHome() {
         dispose(); 
-        Landing landingPage = new Landing();
+        LandingGUI landingPage = new LandingGUI();
         landingPage.setVisible(true);
     }
     

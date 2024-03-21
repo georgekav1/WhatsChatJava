@@ -1,5 +1,3 @@
-package GUIs;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,13 +10,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
-public class Landing extends JFrame {
-	
+public class LandingGUI extends JFrame {
+	private Profile userProfile;
 	private JPanel panel;
 	
-	public Landing() {
+	public LandingGUI() {
+		userProfile = Profile.loadProfile();
 		setTitle("WhatsChat");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 600);
@@ -34,8 +32,11 @@ public class Landing extends JFrame {
 	}
 	
 	private void panel() {
-	    panel = new JPanel(new GridLayout(4, 1, 5, 5)); // GridLayout with one column for vertical stacking
+	    panel = new JPanel(new GridLayout(5, 1, 5, 5)); 
 		
+	    JLabel welcome = new JLabel("Welcome back, " + userProfile.getName() , SwingConstants.LEFT);		
+		panel.add(welcome);
+	    
 		JLabel title = new JLabel("WhatsChat", SwingConstants.CENTER);		
 		panel.add(title);
 		
@@ -68,17 +69,17 @@ public class Landing extends JFrame {
 	}
 	
 	private void openContactsGUI() {
-		Contacts contactGUI = new Contacts();
+		ContactGUI contactGUI = new ContactGUI();
 		contactGUI.setVisible(true);
 	}
 	
 	private void openProfileGUI() {
-		Profile profileGUI = new Profile();
+		ProfileGUI profileGUI = new ProfileGUI();
 		profileGUI.setVisible(true);
 	}
 	
 	private void openChatsGUI() {
-		Chats chatsGUI = new Chats();
+		ChatsGUI chatsGUI = new ChatsGUI();
 		chatsGUI.setVisible(true);
 	}
 

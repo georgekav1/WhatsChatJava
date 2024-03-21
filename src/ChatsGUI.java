@@ -1,12 +1,11 @@
-package GUIs;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Chats extends JFrame {
+public class ChatsGUI extends JFrame {
     private JPanel chatPanel;
 
-    public Chats() {
+    public ChatsGUI() {
         setTitle("Chats");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 600);
@@ -56,7 +55,7 @@ public class Chats extends JFrame {
     
     private void returnToHome() {
         dispose(); 
-        Landing landingPage = new Landing();
+        LandingGUI landingPage = new LandingGUI();
         landingPage.setVisible(true);
     }   
 }
