@@ -1,4 +1,3 @@
-import GUIs.*;
 
 /**
  * The Main class contains the main method to start the application.
@@ -10,7 +9,7 @@ public class Main {
      *
      */
     public static void main(String[] args) {
-        Landing frame = new Landing();
+        LandingGUI frame = new LandingGUI();
 
         frame.setVisible(true);
     }
