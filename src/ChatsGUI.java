@@ -22,7 +22,7 @@ public class ChatsGUI extends JFrame {
         chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS)); // Vertical layout for chat entries
         
         // Simulate chat entries with labels
-        addChatEntry("John Doe", "Hello there!", "10:00 AM", true);
+        addChatEntry("John", "Hello there!", "10:00 AM", true);
         addChatEntry("Alice", "Hi, how are you?", "11:30 AM", false);
         addChatEntry("Bob", "Good morning!", "12:15 PM", true);
         addChatEntry("Emma", "What's up?", "1:00 PM", false);
