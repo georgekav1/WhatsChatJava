@@ -134,7 +134,7 @@ public class LandingGUI extends JFrame {
 	}
 	
 	public void openChatsGUI() {
-		ChatsGUI chatsGUI = new ChatsGUI();
+		ChatGUI chatsGUI = new ChatGUI();
 		chatsGUI.setVisible(true);
 	}
 	

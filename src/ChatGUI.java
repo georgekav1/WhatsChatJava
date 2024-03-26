@@ -1,10 +1,9 @@
 
 import javax.swing.*;
-import java.awt.*;
 
-public class ChatsGUI extends JFrame {
+public class ChatGUI extends JFrame {
 
-    public ChatsGUI() {
+    public ChatGUI() {
         setTitle("Chats");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 600); 
