@@ -45,7 +45,7 @@ public class ProfileGUI extends JFrame {
         save.addActionListener(e -> saveDetails());
         
         JLabel staticLabel = new JLabel("Here are your Profile Details:", SwingConstants.CENTER);
-        buttonPanel = new JPanel(new GridLayout(0, 2, 0, 5)); // GridLayout with 2 columns for labels and fields
+        buttonPanel = new JPanel(new GridLayout(0, 2, 0, 5)); 
 
         buttonPanel.add(new JLabel("Full Name:"));
         nameField = new JTextField(10); 
