@@ -2,6 +2,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.List;
 
 public class ContactGUI extends JFrame {
@@ -37,13 +38,29 @@ public class ContactGUI extends JFrame {
         JMenuItem recentlyChattedItem = new JMenuItem("Recently Chatted");
         //recentlyChattedItem.addActionListener(e -> displayContactsByChat());
         
+        JMenu manageContacts = new JMenu("Manage:");
+        JMenuItem addContact = new JMenuItem("Add New Contact");
+        addContact.addActionListener(e -> addContact());
+
+        JMenuItem removeContact = new JMenuItem("Remove Contact");
+        //removeContact.addActionListener(e -> ContactManager.removeContact());
+
+        JMenuItem editContact = new JMenuItem("Edit Contact");
+        //editContact.addActionListener(e -> ContactManager.editContact());
+        
+        //Navigation bar 
+        menuBar.add(title);
         title.add(home);
+        
+        menuBar.add(displayByMenu);
         displayByMenu.add(alphabeticallyItem);
         displayByMenu.add(recentlyAddedItem);
         displayByMenu.add(recentlyChattedItem);
         
-        menuBar.add(title);
-        menuBar.add(displayByMenu);
+        menuBar.add(manageContacts);
+        manageContacts.add(addContact);
+        manageContacts.add(removeContact);
+        manageContacts.add(editContact);
         
         setJMenuBar(menuBar);
 
@@ -72,6 +89,30 @@ public class ContactGUI extends JFrame {
         populateContactButtons();
         revalidate();
         repaint();
+    }
+    
+    public void addButtonForContact(Contact contact) {
+        JButton contactButton = new JButton(contact.getName() + " - " + contact.getPhoneNumber());
+        contactButton.addActionListener(e -> openChatWithContact(contact));
+        buttonPanel.add(contactButton);
+    }
+    
+    public void addContact() {
+        String name = JOptionPane.showInputDialog(this, "Enter Contact Name:");
+        if (name != null && !name.isEmpty()) {
+            String phoneNumber = JOptionPane.showInputDialog(this, "Enter Phone Number:");
+            if (phoneNumber != null && !phoneNumber.isEmpty()) {
+                Contact newContact = new Contact(name, phoneNumber, new Date());
+                contactManager.addContact(newContact);
+                addButtonForContact(newContact);
+                revalidate();
+                repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Phone number cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Name cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void returnToHome() {

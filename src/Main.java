@@ -1,3 +1,4 @@
+import java.util.Date;
 
 /**
  * The Main class contains the main method to start the application.
@@ -8,9 +9,10 @@ public class Main {
      * It creates a new instance of the Landing class and makes it visible.
      *
      */
-    public static void main(String[] args) {         	
+    public static void main(String[] args) { 
         LandingGUI frame = new LandingGUI();
         
         frame.setVisible(true);
     }
+       
 }
