@@ -1,27 +1,32 @@
+import java.util.*;
 public class ListNode {
     // instance variables
 
-    private int data;
+    private String data;
+    private Date time;
     private ListNode next;
 
     /**
      * Constructor for objects of class List
-     * @param the value to be in the node
+     * @param data the value to be in the node
+     * @param time time of data entry
      */
-    public ListNode(int data)
+    public ListNode(String data, Date time)
     {
         // initialise instance variables
         this.data = data;
+        this.time = time;
         this.next = null;
     }
 
     /**
-     * Default onstructor for objects of class List
+     * Default constructor for objects of class List
      */
     public ListNode()
     {
         // initialise instance variables
-        this.data = 0;
+        this.data = null;
+        this.time = null;
         this.next = null;
     }
 
@@ -40,7 +45,7 @@ public class ListNode {
      *
      * @return mark at this node
      */
-    public int getData()
+    public String getData()
     {
         return data;
     }
@@ -49,7 +54,7 @@ public class ListNode {
     /**
      * Set the next node
      *
-     * @param  the node to be added at this node's next
+     * @param  next the node to be added at this node's next
      */
     public void setNext(ListNode next)
     {
@@ -63,7 +68,7 @@ public class ListNode {
     {
         String info;
 
-        info = "data: "+data;
+        info = "data: "+data+" time: "+time;
 
         return info;
     }
