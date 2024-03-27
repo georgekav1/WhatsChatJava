@@ -10,34 +10,55 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Date;
 
-public class ContactManager {
-    private List<Contact> contacts;
+	/**
+ 	* Method that controls all contact operations.
+ 	*/
+	public class ContactManager {
+    public List<Contact> contacts;
     private String contactsFile = "contacts.txt";
 
-
+    /**
+     * Initialises contacts using data saved in contacts.txt
+     */
     public ContactManager() {
         contacts = loadContactsFromFile();
     }
     
+    /**
+     * Method to return the list of contacts.
+     * 
+     * @return contacts The list of contacts.
+     */
     public List<Contact> getContacts() {
 		return contacts;
 	}
 
+    /**
+     * Method to add and save new contact.
+     * 
+     * @param contact
+     */
     public void addContact(Contact contact) {
-    	contact.setAddedDate(new Date());
-    	
-        if (!contacts.contains(contact)) {
+    	contact.setAddedDate(new Date());    	
         contacts.add(contact);
-        saveContactsToFile();
-        } else {
-        	System.out.println("Contact already exists!");
-        }
+        saveContactsToFile();      
     }
 
+    /**
+     * Method to remove contact from list.
+     * 
+     * @param contact
+     */
     public void removeContact(Contact contact) {
         contacts.remove(contact);
     }
 
+    /**
+     * Method to edit details of a contact.
+     * 
+     * @param oldContact
+     * @param newContact
+     */
     public void editContact(Contact oldContact, Contact newContact) {
         int index = contacts.indexOf(oldContact);
         if (index != -1) {
@@ -45,20 +66,34 @@ public class ContactManager {
         }
     }
 
+    /**
+     * Method used to display contacts A-Z.
+     */
     public void displayContactsAlphabetically() {
         Collections.sort(contacts, Comparator.comparing(Contact::getName));       
     }
 
+    /**
+     * Method used to display contacts by most recently added.
+     */
     public void displayContactsByRecent() {
     	Collections.sort(contacts, Comparator.comparing(Contact::getAddedDate).reversed());     
     }
 
+    /**
+     * Method used to display contacts.
+     */
     public void displayContacts() {
         for (Contact contact : contacts) {
             System.out.println(contact.getName() + " - " + contact.getPhoneNumber() + " - " + contact.getAddedDate());
         }
     }
 
+    /**
+     * Method used to retrieve the contacts from contacts.txt
+     * 
+     * @return loadedContacts The contacts taken from contacts.txt
+     */
     private List<Contact> loadContactsFromFile() {
         List<Contact> loadedContacts = new ArrayList<>();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(contactsFile))) {
@@ -71,6 +106,9 @@ public class ContactManager {
         return loadedContacts;
     }
     
+    /**
+     * Method used to save the contacts to contacts.txt
+     */
     private void saveContactsToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(contactsFile, false))) {
             oos.writeObject(contacts);

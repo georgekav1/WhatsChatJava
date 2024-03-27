@@ -1,4 +1,3 @@
-import java.util.Date;
 
 /**
  * The Main class contains the main method to start the application.

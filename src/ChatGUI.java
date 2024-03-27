@@ -1,8 +1,13 @@
-
 import javax.swing.*;
 
+/**
+ * Class that will allow the user to create a new chat.
+ */
 public class ChatGUI extends JFrame {
-
+	
+	/**
+	 * Method to display the GUI with all of its properties.
+	 */
     public ChatGUI() {
         setTitle("Chats");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -18,9 +23,11 @@ public class ChatGUI extends JFrame {
         menuBar.add(title);
 
         setJMenuBar(menuBar);
-
     }
     
+    /**
+     * Method used to navigate back to the LandingGUI.
+     */
     private void returnToHome() {
         dispose(); 
         LandingGUI landingPage = new LandingGUI();

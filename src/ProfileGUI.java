@@ -1,12 +1,13 @@
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Class that allows the user to view/edit their profile in a user interface.
+ */
 public class ProfileGUI extends JFrame {
     private JPanel buttonPanel;
     private JTextField nameField;
@@ -15,9 +16,10 @@ public class ProfileGUI extends JFrame {
     private JTextField emailField;
     private JTextField bdayField;
     
-    
-    public ProfileGUI() {
-    	       	
+    /**
+	 * Method to display the GUI with all of its properties.
+	 */
+    public ProfileGUI() {   	       	
         setTitle("Profile Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 600);
@@ -35,6 +37,9 @@ public class ProfileGUI extends JFrame {
               
     }
     
+    /**
+     * Method displaying the GUI with all the profile fields and text areas, allowing the user to edit whatever they please.
+     */
     private void panel() {
     	JMenuBar menuBar = new JMenuBar();
         JMenu title = new JMenu("WhatsChat");
@@ -78,12 +83,18 @@ public class ProfileGUI extends JFrame {
         getContentPane().add(new JScrollPane(buttonPanel), BorderLayout.CENTER); 
 	}
 
+    /**
+     * Method used to navigate back to the LandingGUI.
+     */
 	private void returnToHome() {
         dispose(); 
         LandingGUI landingPage = new LandingGUI();
         landingPage.setVisible(true);
     }
     
+	/**
+     * Method used to retrieve profile details from profile.txt
+     */
 	private void loadProfileDetails() {
         Profile userProfile = Profile.loadProfile();
         if (userProfile != null) {
@@ -100,6 +111,9 @@ public class ProfileGUI extends JFrame {
         }
     }
     
+	/**
+     * Method used to save the contacts to profile.txt
+     */
     private void saveDetails() {
         try {
             Profile userProfile = new Profile();

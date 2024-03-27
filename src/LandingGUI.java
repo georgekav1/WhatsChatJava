@@ -2,8 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,11 +13,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
+/**
+ * Class that serves as the main menu of the program, displaying chats and buttons used to access other GUIs.
+ */
 public class LandingGUI extends JFrame {
 	private Profile userProfile;
 	private JPanel buttonPanel;
 	private JPanel chatPanel;
 	
+	/**
+	 * Method to display the GUI with all of its properties.
+	 */
 	public LandingGUI() {
 		userProfile = Profile.loadProfile();
 		setTitle("WhatsChat");
@@ -47,6 +51,9 @@ public class LandingGUI extends JFrame {
 	        getContentPane().add(splitPane, BorderLayout.CENTER);	
 	}
 	
+	/**
+	 * Method outlining the panel that includes the buttons that allow the user to navigate through the program.
+	 */
 	public void buttonPanel() {
 	    buttonPanel = new JPanel(new GridLayout(4, 1, 5, 5)); 
 		
@@ -81,6 +88,9 @@ public class LandingGUI extends JFrame {
 		});	
 	}	
 	
+	/**
+	 * Method outlining the panel that displays details of chats received from different contacts.
+	 */
 	public void chatPanel() {
 		chatPanel = new JPanel();
         chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
@@ -92,6 +102,14 @@ public class LandingGUI extends JFrame {
         addChatEntry("Emma", "What's up?", "1:00 PM", false);
 	}
 	
+	/**
+	 * Method used to format and display the chats with each contact.
+	 * 
+	 * @param sender The contact that sent the message.
+	 * @param message The contents of the chat.
+	 * @param time The time the chat was sent.
+	 * @param read Whether the chat has been read or not.
+	 */
 	private void addChatEntry(String sender, String message, String time, boolean read) {
         JPanel entryPanel = new JPanel(new BorderLayout());
         JLabel senderLabel = new JLabel(sender + ": ");
@@ -107,6 +125,9 @@ public class LandingGUI extends JFrame {
         chatPanel.add(entryPanel);
     }
 	
+	/**
+	 * Method to open the Contacts GUI.
+	 */
 	public void openContactsGUI() {
         ContactManager contactManager = new ContactManager();
 
@@ -114,11 +135,17 @@ public class LandingGUI extends JFrame {
 		contactGUI.setVisible(true);
 	}
 	
+	/**
+	 * Method to open the Profile GUI.
+	 */
 	public void openProfileGUI() {
 		ProfileGUI profileGUI = new ProfileGUI();
 		profileGUI.setVisible(true);
 	}
 	
+	/**
+	 * Method to open the Chats GUI.
+	 */
 	public void openChatsGUI() {
 		ChatGUI chatsGUI = new ChatGUI();
 		chatsGUI.setVisible(true);
