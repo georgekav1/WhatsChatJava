@@ -1,3 +1,4 @@
+import java.util.*;
 public class List {
     private ListNode head;
 
@@ -12,14 +13,13 @@ public class List {
     /**
      * Add a new node at the start of a list
      *
-     * @param student Student name or ID
-     * @param mark    Student mark
+     * @param data data in list
      */
-    public void addToList(int data) {
+    public void addToList(String data, Date time) {
         ListNode marker;
         ListNode newOne;
 
-        newOne = new ListNode(data);
+        newOne = new ListNode(data, time);
         newOne.setNext(head);
 
         head = newOne;
