@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * The Contact class represents a contact with a name and phone number.
  */
-public class Contact {
+public class Contact implements Serializable {
     private String name;
     private String phoneNumber;
     private Date addedDate;
@@ -68,7 +69,7 @@ public class Contact {
     /**
      * Sets the time the contact was added.
      *
-     * @param phoneNumber The time the contact was added.
+     * @param addedDate The time the contact was added.
      */
     public void setAddedDate(Date addedDate) {
         this.addedDate = addedDate;
