@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Date;
+import java.util.Iterator;
 
 	/**
  	* Method that controls all contact operations.
@@ -47,23 +48,32 @@ import java.util.Date;
     /**
      * Method to remove contact from list.
      * 
-     * @param contact
+     * @param name The name of the contact to be removed.
      */
-    public void removeContact(Contact contact) {
-        contacts.remove(contact);
+    public boolean removeContactByName(String name) {
+        // Iterate through contacts to find and remove the contact by name
+        for (Iterator<Contact> iterator = contacts.iterator(); iterator.hasNext();) {
+            Contact contact = iterator.next();
+            if (contact.getName().equals(name)) {
+                iterator.remove(); // Remove the contact
+                return true; // Contact removed successfully
+            }
+        }
+        return false; // Contact not found or failed to remove
     }
 
     /**
      * Method to edit details of a contact.
-     * 
-     * @param oldContact
-     * @param newContact
      */
-    public void editContact(Contact oldContact, Contact newContact) {
-        int index = contacts.indexOf(oldContact);
-        if (index != -1) {
-            contacts.set(index, newContact);
+    public boolean editContactByName(String name, String newName, String newPhoneNumber) {
+        for (Contact contact : contacts) {
+            if (contact.getName().equals(name)) {
+                contact.setName(newName);
+                contact.setPhoneNumber(newPhoneNumber);
+                return true; 
+            }
         }
+        return false;
     }
 
     /**
