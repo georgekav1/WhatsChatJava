@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -9,6 +11,7 @@ import java.util.List;
 public class ContactGUI extends JFrame {
     private JPanel buttonPanel;
     private ContactManager contactManager; 
+    private JButton selectedButton;
 
     /**
      * This class creates a GUI with buttons and allows the user to sort contacts in whichever way they like.
@@ -50,10 +53,10 @@ public class ContactGUI extends JFrame {
         addContact.addActionListener(e -> addNewContact());
 
         JMenuItem removeContact = new JMenuItem("Remove Contact");
-        removeContact.addActionListener(e -> removeContact());
+        removeContact.addActionListener(e -> removingContact());
 
         JMenuItem editContact = new JMenuItem("Edit Contact");
-        //editContact.addActionListener(e -> ContactManager.editContact());
+        editContact.addActionListener(e -> editingContact());
                
         menuBar.add(title);
         title.add(home);
@@ -82,7 +85,7 @@ public class ContactGUI extends JFrame {
         getContentPane().add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
     }
 
-    /**
+	/**
      * Method that generates the buttons with labels including contact names and phone numbers to buttons on GUI. 
      */
 	public void populateContactButtons() {
@@ -140,10 +143,124 @@ public class ContactGUI extends JFrame {
     /**
      * Method that is activated once "Remove Contact" tab is selected, options will then be displayed and selected contact will be removed from list.
      */
-    public void removeContact() {
-    	
-	}
+    public void removingContact() {
+    	List<Contact> contacts = contactManager.getContacts();
 
+        if (contacts.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No contacts to remove.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        JDialog dialog = new JDialog(this, "Remove Contact", true);
+        JPanel dialogPanel = new JPanel(new GridLayout(0, 1));
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+        for (Contact contact : contacts) {
+            JRadioButton radioButton = new JRadioButton(contact.getName());
+            buttonGroup.add(radioButton);
+            dialogPanel.add(radioButton);
+        }
+
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(e -> {
+            String selectedContactName = getSelectedContactName(buttonGroup);
+            if (selectedContactName != null) {
+                boolean removed = contactManager.removeContactByName(selectedContactName);
+                if (removed) {
+                    refreshContactButtons(); 
+                    JOptionPane.showMessageDialog(this, "Contact removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to remove contact.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                dialog.dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a contact to remove.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        dialogPanel.add(submitButton);
+        dialog.add(dialogPanel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+    
+    /**
+     * Method that is called in order to perform an action on the contact selected.
+     * 
+     * @param buttonGroup The options of contacts alongside radio buttons.
+     * @return The contact that is selected.
+     */
+    public String getSelectedContactName(ButtonGroup buttonGroup) {
+    	 Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+    	    while (buttons.hasMoreElements()) {
+    	        AbstractButton button = buttons.nextElement();
+    	        if (button.isSelected()) {
+    	            return button.getText();
+    	        }
+    	    }
+    	    return null; 
+    }
+    
+    /**
+     * Method that is activated once "Edit Contact" tab is selected, options will then be displayed and selected contact will be edited.
+     */
+    public void editingContact() {
+        List<Contact> contacts = contactManager.getContacts();
+
+        if (contacts.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No contacts to edit.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        JDialog dialog = new JDialog(this, "Edit Contact", true);
+        JPanel dialogPanel = new JPanel(new GridLayout(0, 1));
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+        for (Contact contact : contacts) {
+            JRadioButton radioButton = new JRadioButton(contact.getName());
+            buttonGroup.add(radioButton);
+            dialogPanel.add(radioButton);
+        }
+
+        JTextField newNameField = new JTextField(20);
+        JTextField newPhoneField = new JTextField(20);
+        dialogPanel.add(new JLabel("New Name:"));
+        dialogPanel.add(newNameField);
+        dialogPanel.add(new JLabel("New Phone Number:"));
+        dialogPanel.add(newPhoneField);
+
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(e -> {
+            String selectedContactName = getSelectedContactName(buttonGroup);
+            if (selectedContactName != null) {
+                String newName = newNameField.getText().trim();
+                String newPhoneNumber = newPhoneField.getText().trim();
+                if (!newName.isEmpty() && !newPhoneNumber.isEmpty()) {
+                    boolean edited = contactManager.editContactByName(selectedContactName, newName, newPhoneNumber);
+                    if (edited) {
+                        refreshContactButtons();
+                        JOptionPane.showMessageDialog(this, "Contact edited successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to edit contact.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    dialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a contact to edit.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        dialogPanel.add(submitButton);
+        dialog.add(dialogPanel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+
+    
     /**
      * Method that is activated once "Home" tab is selected, LandingGUI is then displayed.
      */
