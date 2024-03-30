@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.List;
 public class ContactGUI extends JFrame {
     private JPanel buttonPanel;
     private ContactManager contactManager; 
-    private JButton selectedButton;
 
     /**
      * This class creates a GUI with buttons and allows the user to sort contacts in whichever way they like.
@@ -91,8 +89,8 @@ public class ContactGUI extends JFrame {
 	public void populateContactButtons() {
         List<Contact> contacts = contactManager.getContacts();
         for (Contact contact : contacts) {
-            JButton contactButton = new JButton(contact.getName() + " - " + contact.getPhoneNumber());
-            contactButton.addActionListener(e -> openChatWithContact(contact));
+            JButton contactButton = new JButton(contact.getName());
+            contactButton.addActionListener(e -> selectContact(contact));
             buttonPanel.add(contactButton);
         }
     }
@@ -113,8 +111,8 @@ public class ContactGUI extends JFrame {
      * @param contact
      */
     public void addButtonForContact(Contact contact) {
-        JButton contactButton = new JButton(contact.getName() + " - " + contact.getPhoneNumber());
-        contactButton.addActionListener(e -> openChatWithContact(contact));
+        JButton contactButton = new JButton(contact.getName());
+        contactButton.addActionListener(e -> selectContact(contact));
         buttonPanel.add(contactButton);
     }
     
@@ -273,8 +271,24 @@ public class ContactGUI extends JFrame {
     /**
      * Method that is activated once a contact is selected. The user will then be shown
      * their profile information and displayed a list of 3 most recent chat messages.
+     *
+     * @param contact The contact selected by the user.
      */
-    public void openChatWithContact(Contact contact) {
-        System.out.println("Opening chat with " + contact.getName());
+    public void selectContact(Contact contact) {
+        // Assuming you have a method to get the most recent chat messages of a contact
+        //List<String> recentMessages = contactManager.getRecentChatMessages(contact, 3);
+
+        // Display profile information and recent messages in a dialog
+        StringBuilder messageBuilder = new StringBuilder();
+        messageBuilder.append("Profile Information:\n");
+        messageBuilder.append("Name: " + contact.getName()).append("\n");
+        messageBuilder.append("Phone Number: " + contact.getPhoneNumber()).append("\n\n");
+        
+        messageBuilder.append("Recent Chat Messages:\n");
+        //for (String message : recentMessages) {
+            //messageBuilder.append("- ").append(message).append("\n");
+        //}
+
+        JOptionPane.showMessageDialog(this, messageBuilder.toString(), "Contact Information", JOptionPane.INFORMATION_MESSAGE);
     }
 }
