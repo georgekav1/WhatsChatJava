@@ -32,9 +32,7 @@ public class LandingGUI extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu title = new JMenu("WhatsChat");	
-		
-		JLabel chatLabel = new JLabel("Here are your Chats:                Menu Options:", SwingConstants.CENTER);
-		
+				
 		chatPanel();
 		buttonPanel();
 		
@@ -47,7 +45,6 @@ public class LandingGUI extends JFrame {
 	        splitPane.setDividerLocation(400); 
 	        
 	        getContentPane().setLayout(new BorderLayout());
-	        getContentPane().add(chatLabel, BorderLayout.NORTH);
 	        getContentPane().add(splitPane, BorderLayout.CENTER);	
 	}
 	
