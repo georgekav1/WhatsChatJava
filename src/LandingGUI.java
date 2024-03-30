@@ -95,8 +95,13 @@ public class LandingGUI extends JFrame {
 		List<Contact> contacts = contactManager.getContacts();
 		chatPanel = new JPanel(new GridLayout(contacts.size(), 1, 10, 10));
 
-		for(Contact contact : contacts) {
-			addChatToList(contact);
+		if(contacts.size() > 0) {
+			for(Contact contact : contacts) {
+				// TODO: Check is the user has an existing chat. Right now all contacts are loaded.
+				addChatToList(contact);
+			}
+		} else {
+
 		}
 	}
 

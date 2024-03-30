@@ -4,6 +4,8 @@ import javax.swing.*;
  * Class that will allow the user to create a new chat.
  */
 public class ChatGUI extends JFrame {
+
+    private ContactManager contactManager;
 	
 	/**
 	 * Method to display the GUI with all of its properties.
@@ -23,6 +25,13 @@ public class ChatGUI extends JFrame {
         menuBar.add(title);
 
         setJMenuBar(menuBar);
+
+        contactManager = new ContactManager();
+
+        for(Contact contact : contactManager.getContacts()) {
+            // TODO: check the message  files for contacts which DO NOT have any chats and then add them to a list here
+        }
+
     }
     
     /**
