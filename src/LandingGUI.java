@@ -1,17 +1,13 @@
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import java.security.DigestException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Class that serves as the main menu of the program, displaying chats and buttons used to access other GUIs.
@@ -20,6 +16,9 @@ public class LandingGUI extends JFrame {
 	private Profile userProfile;
 	private JPanel buttonPanel;
 	private JPanel chatPanel;
+	private JPanel chat;
+	private ContactManager contactManager;
+	private JSplitPane splitPane;
 	
 	/**
 	 * Method to display the GUI with all of its properties.
@@ -31,9 +30,12 @@ public class LandingGUI extends JFrame {
 		setSize(800, 600);
 		
 		JMenuBar menuBar = new JMenuBar();
-		JMenu title = new JMenu("WhatsChat");	
+		JMenu title = new JMenu("WhatsChat");
+
+		contactManager = new ContactManager();
 				
-		chatPanel();
+//		chatPanel();
+		chatListPanel();
 		buttonPanel();
 		
 		menuBar.add(title);		
@@ -41,13 +43,17 @@ public class LandingGUI extends JFrame {
 		setJMenuBar(menuBar);
 		
 		add(buttonPanel, BorderLayout.CENTER);
-		 JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(chatPanel), new JScrollPane(buttonPanel));
-	        splitPane.setDividerLocation(400); 
-	        
-	        getContentPane().setLayout(new BorderLayout());
-	        getContentPane().add(splitPane, BorderLayout.CENTER);	
+		addSplitPane();
 	}
-	
+
+	public void addSplitPane() {
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(buttonPanel), new JScrollPane(chatPanel));
+		splitPane.setDividerLocation(330);
+
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(splitPane, BorderLayout.CENTER);
+	}
+
 	/**
 	 * Method outlining the panel that includes the buttons that allow the user to navigate through the program.
 	 */
@@ -83,20 +89,110 @@ public class LandingGUI extends JFrame {
 				openChatsGUI();
 			}
 		});	
-	}	
+	}
+
+	public void chatListPanel() {
+		List<Contact> contacts = contactManager.getContacts();
+		chatPanel = new JPanel(new GridLayout(contacts.size(), 1, 10, 10));
+
+		for(Contact contact : contacts) {
+			addChatToList(contact);
+		}
+	}
+
+	public void addChatToList(Contact contact) {
+		JButton contactButton = new JButton("<html><div> " + contact.getName() + "</div><br /><div>" + contact.getPhoneNumber() + "</div>");
+
+		contactButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chatPanel(contact);
+				splitPane.setRightComponent(new JScrollPane(chatPanel));
+				splitPane.setDividerLocation(300);
+			}
+		});
+
+		chatPanel.add(contactButton);
+	}
 	
 	/**
 	 * Method outlining the panel that displays details of chats received from different contacts.
 	 */
-	public void chatPanel() {
+	public void chatPanel(Contact contact) {
 		chatPanel = new JPanel();
         chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
+		JButton closeButton = new JButton("Close Chat");
+
+		chat = new JPanel();
+		chat.setLayout(new BoxLayout(chat, BoxLayout.Y_AXIS));
+		chat.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		JScrollPane scrollChat = new JScrollPane(chat);
+		scrollChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollChat.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollChat.setPreferredSize(new Dimension(400, 400));
+		chatPanel.add(scrollChat);
+
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chatListPanel();
+				splitPane.setLeftComponent(new JScrollPane(chatPanel));
+				splitPane.setDividerLocation(400);
+			}
+		});
+
 
         // Simulate chat entries with labels
-        addChatEntry("John", "Hello there!", "10:00 AM", true);
-        addChatEntry("Steven", "Hi, how are you?", "11:30 AM", false);
-        addChatEntry("Alex", "Good morning!", "12:15 PM", true);
-        addChatEntry("Emma", "What's up?", "1:00 PM", false);
+        addChatEntry(contact.getName(), "Hello there!", "10:00 AM", true);
+        addChatEntry(contact.getName(), "Hi, how are you?", "11:30 AM", false);
+        addChatEntry(contact.getName(), "Good morning!", "12:15 PM", true);
+        addChatEntry(contact.getName(), "What's up?", "1:00 PM", false);
+
+		JPanel inputPanel = new JPanel(new GridBagLayout());
+		JTextField chatInput = new JTextField();
+		JButton submitBtn = new JButton("<html><div style='display:inline;'>Submit</div></html>");
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		submitBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String message = chatInput.getText();
+
+				Date currentDate = new Date();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+				String currentDateTime = dateFormat.format(currentDate);
+
+				addChatEntry("You", message, currentDateTime, true);
+				chatPanel.revalidate();
+				chatPanel.repaint();
+			}
+		});
+
+		gbc.gridwidth = 2;
+		gbc.gridheight = 2;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		inputPanel.add(chatInput, gbc);
+
+		gbc.gridwidth = 1;
+		gbc.gridx = 3;
+		gbc.gridy = 0;
+		gbc.weightx = 0;
+		gbc.weighty = 0;
+
+		inputPanel.add(submitBtn, gbc);
+
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridy = 2;
+		gbc.gridx = 0;
+		gbc.weightx = 1.0;
+		gbc.weighty = 0;
+
+		inputPanel.add(closeButton, gbc);
+		chatPanel.add(inputPanel);
 	}
 	
 	/**
@@ -114,12 +210,53 @@ public class LandingGUI extends JFrame {
         JLabel timeLabel = new JLabel(time);
         JLabel readLabel = new JLabel(read ? "Read" : "Unread");
 
+		JPanel menuPanel = new JPanel(new GridBagLayout());
+
+
+		JButton deleteButton = new JButton("Delete");
+		JButton likeButton = new JButton("Like ♡");
+
+		likeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(likeButton.getText().contains("Like")) {
+					likeButton.setText("Unlike ❤");
+				} else {
+					likeButton.setText("Like ♡");
+				}
+			}
+		});
+
+		deleteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chat.remove(entryPanel);
+				chat.revalidate();
+				chat.repaint();
+			}
+		});
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 0;
+		gbc.weightx = 1.0;
+
+		menuPanel.add(readLabel, gbc);
+
+		gbc.gridx = 1;
+		menuPanel.add(likeButton, gbc);
+
+		gbc.gridx = 2;
+		menuPanel.add(deleteButton, gbc);
+
         entryPanel.add(senderLabel, BorderLayout.WEST);
         entryPanel.add(messageLabel, BorderLayout.CENTER);
         entryPanel.add(timeLabel, BorderLayout.EAST);
-        entryPanel.add(readLabel, BorderLayout.SOUTH);
+		entryPanel.add(menuPanel, BorderLayout.SOUTH);
 
-        chatPanel.add(entryPanel);
+		entryPanel.setPreferredSize(new Dimension(350, 50));
+
+        chat.add(entryPanel);
     }
 	
 	/**
