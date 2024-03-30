@@ -20,7 +20,7 @@ public class ContactGUI extends JFrame {
         this.contactManager = contactManager;
 
         setTitle("WhatsChat");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 600);
 
         //Navigation bar

@@ -21,7 +21,7 @@ public class ProfileGUI extends JFrame {
 	 */
     public ProfileGUI() {   	       	
         setTitle("Profile Details");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 600);
 
         panel();

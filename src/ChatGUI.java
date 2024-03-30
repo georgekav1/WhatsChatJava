@@ -10,7 +10,7 @@ public class ChatGUI extends JFrame {
 	 */
     public ChatGUI() {
         setTitle("Chats");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 600); 
 
         JMenuBar menuBar = new JMenuBar();
