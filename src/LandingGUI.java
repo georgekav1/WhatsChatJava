@@ -43,7 +43,6 @@ public class LandingGUI extends JFrame {
 			messageStoreManager.getMessageStore(contact).loadMessages();
 		}
 
-//		chatPanel();
 		chatListPanel();
 		buttonPanel();
 		
@@ -56,10 +55,10 @@ public class LandingGUI extends JFrame {
 	}
 
 	public void refreshContactListPanel() {
-		chatListPanel(); // Rebuild the chat list panel
-		splitPane.setRightComponent(new JScrollPane(chatPanel)); // Update the split pane
-		splitPane.setDividerLocation(300); // You might need to adjust this
-		this.revalidate(); // Refresh the entire JFrame
+		chatListPanel();
+		splitPane.setRightComponent(new JScrollPane(chatPanel));
+		splitPane.setDividerLocation(300);
+		this.revalidate();
 		this.repaint();
 	}
 
