@@ -59,6 +59,10 @@ public class LandingGUI extends JFrame {
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 	}
 
+	public JSplitPane getSplitPane() {
+		return splitPane;
+	}
+
 	/**
 	 * Method outlining the panel that includes the buttons that allow the user to navigate through the program.
 	 */
@@ -96,6 +100,13 @@ public class LandingGUI extends JFrame {
 		});	
 	}
 
+	public void refreshChatPanel() {
+		chatListPanel();
+		chatPanel.revalidate();
+		chatPanel.repaint();
+		splitPane.setRightComponent(chatPanel);
+	}
+
 	public void chatListPanel() {
 		
 		List<Contact> contacts = contactManager.getContacts();
@@ -110,8 +121,6 @@ public class LandingGUI extends JFrame {
 					addChatToList(contact);
 				}
 			}
-		} else {
-
 		}
 	}
 
@@ -168,7 +177,7 @@ public class LandingGUI extends JFrame {
 
 		HashSet<Message> messages = messageStoreManager.getMessageStore(contact).getMessages();
 		for(Message message : messages) {
-			addChatEntry(message, contact, contact.getName().equals("You"));
+			addChatEntry(message, contact);
 		}
 
 		JPanel inputPanel = new JPanel(new GridBagLayout());
@@ -186,7 +195,7 @@ public class LandingGUI extends JFrame {
 				String currentDateTime = dateFormat.format(currentDate);
 
 				Message newMessage = new Message("You", currentDateTime, false, false, message);
-				addChatEntry(newMessage, contact, true);
+				addChatEntry(newMessage, contact);
 				chatPanel.revalidate();
 				chatPanel.repaint();
 				messageStoreManager.getMessageStore(contact).saveMessages();
@@ -227,9 +236,9 @@ public class LandingGUI extends JFrame {
 	 * @param message The contents of the chat.
 	 * @param contact The contact that sent the message.
 	 */
-	public void addChatEntry(Message message, Contact contact, Boolean youOrNo) {
+	public void addChatEntry(Message message, Contact contact) {
         JPanel entryPanel = new JPanel(new BorderLayout());
-        JLabel senderLabel = new JLabel(youOrNo ? "You: " :message.getContactName()  + ": ");
+        JLabel senderLabel = new JLabel(message.getContactName()  + ": ");
         JLabel messageLabel = new JLabel(message.getContent());
 
         JLabel timeLabel = new JLabel(message.getTime());
@@ -240,10 +249,6 @@ public class LandingGUI extends JFrame {
 		JButton deleteButton = new JButton("Delete");
 		JButton likeButton = new JButton(!message.isLiked() ? "Like ♡" : "Unlike ❤");
 
-		if(youOrNo == true) {
-			message.setContactName("You");
-			message.setContact(Optional.ofNullable(contact.getName()));
-		}
 
 		likeButton.addActionListener(new ActionListener() {
 			@Override

@@ -8,7 +8,6 @@ public class Message {
     private boolean liked;
     private boolean read;
 
-    private Optional<String> contact;
 
     public Message() {
         
@@ -60,13 +59,5 @@ public class Message {
 
     public void setRead(boolean read) {
         this.read = read;
-    }
-
-    public Optional<String> getContact() {
-        return contact;
-    }
-
-    public void setContact(Optional<String> contact) {
-        this.contact = contact;
     }
 }

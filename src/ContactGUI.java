@@ -276,13 +276,16 @@ public class ContactGUI extends JFrame {
         // Display profile information and recent messages in a dialog
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append("Profile Information:\n");
-        messageBuilder.append("Name: " + contact.getName()).append("\n");
-        messageBuilder.append("Phone Number: " + contact.getPhoneNumber()).append("\n\n");
+        messageBuilder.append("Name: ").append(contact.getName()).append("\n");
+        messageBuilder.append("Phone Number: ").append(contact.getPhoneNumber()).append("\n\n");
         
         messageBuilder.append("Recent Chat Messages:\n");
-        //for (String message : recentMessages) {
-            //messageBuilder.append("- ").append(message).append("\n");
-        //}
+
+        for(Message message : Main.messageStoreManager.getMessageStore(contact).getMessages()) {
+            if(message.getContactName().equals(contact.getName())) {
+                messageBuilder.append(message.getContactName()).append("\n");
+            }
+        }
 
         JOptionPane.showMessageDialog(this, messageBuilder.toString(), "Contact Information", JOptionPane.INFORMATION_MESSAGE);
     }

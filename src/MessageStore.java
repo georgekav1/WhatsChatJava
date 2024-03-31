@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 public class MessageStore {
     private HashSet<Message> messages;
-    private final String fileName = "messages.txt";
     private Contact contact;
     private ContactManager contactManager;
     private final MessageStoreManager messageStoreManager;
@@ -45,9 +44,12 @@ public class MessageStore {
         BufferedReader bufferedReader = null;
 
         String nextLine;
+        String fileName = "messages/" + contact.getName() + ".txt";
 
         try {
-            fileReader = new FileReader(fileName);
+            File file = new File(fileName);
+            file.createNewFile();
+            fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
 
             nextLine = bufferedReader.readLine();
@@ -70,32 +72,8 @@ public class MessageStore {
                         newMsg.setContent(splitString[4]);
                         addMessage(newMsg);
                     }
-                } else if(nextLine.contains("You")) {
-                    String[] splitString = nextLine.split(";");
-                    Message newMsg = new Message();
-
-                    if (splitString.length == 6) {
-                        newMsg.setContactName(splitString[0]);
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        Date date = format.parse(splitString[1]);
-                        String dateTime = format.format(date);
-
-                        newMsg.setTime(dateTime);
-                        newMsg.setLiked(Boolean.parseBoolean(splitString[2]));
-                        newMsg.setRead(Boolean.parseBoolean(splitString[3]));
-                        newMsg.setContent(splitString[4]);
-
-                        String contactString = splitString[5];
-                        Contact contact = contactManager.getContact(contactString);
-
-                        if(contact != null) {
-                            MessageStoreManager msgStoreMan = Main.getMessageStoreManager();
-                            if(msgStoreMan != null) {
-                                msgStoreMan.getMessageStore(contact).addMessage(newMsg);
-                            }
-                        }
-                    }
                 }
+
                 nextLine = bufferedReader.readLine();
             }
         } catch(FileNotFoundException e) {
@@ -118,23 +96,24 @@ public class MessageStore {
     public void saveMessages() {
         FileOutputStream outputStream = null;
         PrintWriter printWriter = null;
+        String fileName = "messages/" + contact.getName() + ".txt";
 
         try {
-            outputStream = new FileOutputStream(fileName, true);
+            File file = new File(fileName);
+            file.createNewFile();
+            outputStream = new FileOutputStream(file, false);
             printWriter = new PrintWriter(outputStream);
 
             for(Message message : messages) {
                 String line = message.getContactName() + ";" + message.getTime() + ";" + message.isLiked() + ";" + message.isRead() + ";" + message.getContent();
-
-                if(message.getContact() != null) {
-                    line += ";" + message.getContact().get();
-                }
 
                 printWriter.println(line);
                 System.out.println(line);
             }
         } catch(FileNotFoundException e) {
             System.out.println("File not found");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             if(printWriter != null) {
                 printWriter.close();

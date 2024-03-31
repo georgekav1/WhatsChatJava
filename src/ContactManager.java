@@ -60,12 +60,10 @@ import java.util.Iterator;
      */
     public boolean removeContactByName(String name) {
         // Iterate through contacts to find and remove the contact by name
-        for (Iterator<Contact> iterator = contacts.iterator(); iterator.hasNext();) {
-            Contact contact = iterator.next();
-            if (contact.getName().equals(name)) {
-                iterator.remove(); // Remove the contact
-                return true; // Contact removed successfully
-            }
+        Contact contact = getContact(name);
+        if(contact != null) {
+            contacts.remove(contact);
+            return true;
         }
         return false; // Contact not found or failed to remove
     }

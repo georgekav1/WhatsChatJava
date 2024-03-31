@@ -55,10 +55,6 @@ public class ChatGUI extends JFrame {
 
         getContentPane().add(staticLabel, BorderLayout.NORTH);
         getContentPane().add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
-    
-        //for(Contact contact : contactManager.getContacts()) {
-            // TODO: check the message files for contacts which DO NOT have any chats and then add them to a list here
-        //}
     }
 
 	/**
@@ -89,11 +85,14 @@ public class ChatGUI extends JFrame {
 				String currentDateTime = dateFormat.format(currentDate);
 
 				Message newMessage = new Message("You", currentDateTime, false, false, message);
-				landingGUI.addChatEntry(newMessage, contact, true);
-				landingGUI.chatPanel.revalidate();
-				landingGUI.chatPanel.repaint();
-				Main.messageStoreManager.getMessageStore(contact).saveMessages();
+				landingGUI.addChatEntry(newMessage, contact);
 				landingGUI.addChatToList(contact);
+
+				landingGUI.chatListPanel();
+                landingGUI.chatPanel.revalidate();
+                landingGUI.chatPanel.repaint();
+                landingGUI.getSplitPane().setRightComponent(landingGUI.chatPanel);
+				Main.messageStoreManager.getMessageStore(contact).saveMessages();
 			}
 		});
 
