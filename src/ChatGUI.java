@@ -6,6 +6,7 @@ import javax.swing.*;
 public class ChatGUI extends JFrame {
 
     private ContactManager contactManager;
+
 	
 	/**
 	 * Method to display the GUI with all of its properties.
@@ -29,7 +30,17 @@ public class ChatGUI extends JFrame {
         contactManager = new ContactManager();
 
         for(Contact contact : contactManager.getContacts()) {
-            // TODO: check the message  files for contacts which DO NOT have any chats and then add them to a list here
+            // TODO: check the message files for contacts which DO NOT have any chats and then add them to a list here
+//            boolean hasChat = false;
+//            for (Chat chatMessage : messageManager.getMessagesForContact(contact)) {
+//                if (chatMessage.getSender().equals(contact) || chatMessage.getReceiver().equals(contact)) {
+//                    hasChat = true;
+//                    break;
+//                }
+//            }
+//            if (!hasChat) {
+//                contactsWithNoChats.add(contact);
+//            }
         }
 
     }
