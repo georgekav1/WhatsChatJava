@@ -54,6 +54,9 @@ public class LandingGUI extends JFrame {
 		addSplitPane();
 	}
 
+	/**
+	 * Method to refresh the contact list.
+	 */
 	public void refreshContactListPanel() {
 		chatListPanel();
 		splitPane.setRightComponent(new JScrollPane(chatPanel));
@@ -62,7 +65,9 @@ public class LandingGUI extends JFrame {
 		this.repaint();
 	}
 
-
+	/**
+	 * Method to add a divider between the menu options and the chat menu
+	 */
 	public void addSplitPane() {
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(buttonPanel), new JScrollPane(chatPanel));
 		splitPane.setDividerLocation(300);
@@ -112,6 +117,9 @@ public class LandingGUI extends JFrame {
 		});	
 	}
 
+	/**
+	 * Method that displays the list of chats.
+	 */
 	public void chatListPanel() {
 		
 		List<Contact> contacts = contactManager.getContacts();
@@ -126,6 +134,10 @@ public class LandingGUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Method to add a chat to the chat panel.
+	 * @param contact The contact you are trying to message.
+	 */
 	public void addChatToList(Contact contact) {
 		JButton contactButton = new JButton("<html><div> " + contact.getName() + "</div><br /><div>" + contact.getPhoneNumber() + "</div>");
 
