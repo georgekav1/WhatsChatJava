@@ -17,7 +17,7 @@ import java.util.Optional;
 public class LandingGUI extends JFrame {
 	private Profile userProfile;
 	private JPanel buttonPanel;
-	private JPanel chatPanel;
+	JPanel chatPanel;
 	private JPanel chat;
 	private ContactManager contactManager;
 	private JSplitPane splitPane;
@@ -219,7 +219,7 @@ public class LandingGUI extends JFrame {
 	 * @param message The contents of the chat.
 	 * @param contact The contact that sent the message.
 	 */
-	private void addChatEntry(Message message, Contact contact, Boolean youOrNo) {
+	public void addChatEntry(Message message, Contact contact, Boolean youOrNo) {
         JPanel entryPanel = new JPanel(new BorderLayout());
         JLabel senderLabel = new JLabel(youOrNo ? "You: " :message.getContactName()  + ": ");
         JLabel messageLabel = new JLabel(message.getContent());
@@ -309,7 +309,10 @@ public class LandingGUI extends JFrame {
 	 * Method to open the Chats GUI.
 	 */
 	public void openChatsGUI() {
-		ChatGUI chatsGUI = new ChatGUI();
+		ContactGUI contactGUI = new ContactGUI(contactManager);
+		LandingGUI landingGUI = new LandingGUI();
+
+		ChatGUI chatsGUI = new ChatGUI(contactGUI, contactManager, landingGUI);
 		chatsGUI.setVisible(true);
 	}
 		
