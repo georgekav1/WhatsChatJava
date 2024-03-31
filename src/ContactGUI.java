@@ -42,9 +42,6 @@ public class ContactGUI extends JFrame {
         { contactManager.displayContactsByRecent();
         refreshContactButtons();        
         });
-
-        JMenuItem recentlyChattedItem = new JMenuItem("Recently Chatted");
-        //recentlyChattedItem.addActionListener(e -> displayContactsByChat());
         
         JMenu manageContacts = new JMenu("Manage:");
         JMenuItem addContact = new JMenuItem("Add New Contact");
@@ -62,7 +59,7 @@ public class ContactGUI extends JFrame {
         menuBar.add(displayByMenu);
         displayByMenu.add(alphabeticallyItem);
         displayByMenu.add(recentlyAddedItem);
-        displayByMenu.add(recentlyChattedItem);
+       
         
         menuBar.add(manageContacts);
         manageContacts.add(addContact);
@@ -133,8 +130,6 @@ public class ContactGUI extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Phone number cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Name cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -276,7 +271,7 @@ public class ContactGUI extends JFrame {
      */
     public void selectContact(Contact contact) {
         // Assuming you have a method to get the most recent chat messages of a contact
-        //List<String> recentMessages = contactManager.getRecentChatMessages(contact, 3);
+        //List<String> recentMessages = loadRecentChatMessages(contact, 3);
 
         // Display profile information and recent messages in a dialog
         StringBuilder messageBuilder = new StringBuilder();
