@@ -88,8 +88,6 @@ public class ChatGUI extends JFrame {
 				landingGUI.addChatEntry(newMessage, contact);
                 Main.messageStoreManager.getMessageStore(contact).saveMessages();
 
-                System.out.println(Main.messageStoreManager.getMessageStore(contact).getMessageLength());
-
                 landingGUI.refreshContactListPanel();
                 dispose();
 			}

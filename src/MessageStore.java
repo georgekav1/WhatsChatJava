@@ -9,11 +9,9 @@ public class MessageStore {
     private HashSet<Message> messages;
     private Contact contact;
     private ContactManager contactManager;
-    private final MessageStoreManager messageStoreManager;
 
 
     public MessageStore(Contact contact) {
-        messageStoreManager = Main.getMessageStoreManager();
         messages = new HashSet();
         this.contact = contact;
         contactManager = new ContactManager();

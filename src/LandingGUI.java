@@ -23,7 +23,6 @@ public class LandingGUI extends JFrame {
 	private JPanel chat;
 	private ContactManager contactManager;
 	private JSplitPane splitPane;
-	private final MessageStoreManager messageStoreManager = Main.getMessageStoreManager();
 
 	/**
 	 * Method to display the GUI with all of its properties.
@@ -40,7 +39,7 @@ public class LandingGUI extends JFrame {
 		contactManager = new ContactManager();
 
 		for(Contact contact : contactManager.contacts) {
-			messageStoreManager.getMessageStore(contact).loadMessages();
+			Main.getMessageStoreManager().getMessageStore(contact).loadMessages();
 		}
 
 		chatListPanel();
@@ -69,10 +68,6 @@ public class LandingGUI extends JFrame {
 
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(splitPane, BorderLayout.CENTER);
-	}
-
-	public JSplitPane getSplitPane() {
-		return splitPane;
 	}
 
 	/**
@@ -119,7 +114,7 @@ public class LandingGUI extends JFrame {
 
 		if(contacts.size() > 0) {
 			for(Contact contact : contacts) {
-				if(messageStoreManager.getMessageStore(contact).getMessageLength() > 0) {
+				if(Main.getMessageStoreManager().getMessageStore(contact).getMessageLength() > 0) {
 					addChatToList(contact);
 				}
 			}
@@ -177,7 +172,7 @@ public class LandingGUI extends JFrame {
 //		Message testMessage = new Message(contact.getName(), new Date(), false, false, "hitya");
 //		addChatEntry(testMessage, contact);
 
-		HashSet<Message> messages = messageStoreManager.getMessageStore(contact).getMessages();
+		HashSet<Message> messages = Main.getMessageStoreManager().getMessageStore(contact).getMessages();
 		for(Message message : messages) {
 			addChatEntry(message, contact);
 		}
@@ -200,7 +195,7 @@ public class LandingGUI extends JFrame {
 				addChatEntry(newMessage, contact);
 				chatPanel.revalidate();
 				chatPanel.repaint();
-				messageStoreManager.getMessageStore(contact).saveMessages();
+				Main.getMessageStoreManager().getMessageStore(contact).saveMessages();
 			}
 		});
 
@@ -255,7 +250,7 @@ public class LandingGUI extends JFrame {
 		likeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				messageStoreManager.getMessageStore(contact).removeMessage(message);
+				Main.getMessageStoreManager().getMessageStore(contact).removeMessage(message);
 				if(likeButton.getText().contains("Like")) {
 					likeButton.setText("Unlike ❤");
 					message.setLiked(true);
@@ -263,7 +258,7 @@ public class LandingGUI extends JFrame {
 					likeButton.setText("Like ♡");
 					message.setLiked(false);
 				}
-				messageStoreManager.getMessageStore(contact).addMessage(message);
+				Main.getMessageStoreManager().getMessageStore(contact).addMessage(message);
 			}
 		});
 
@@ -271,7 +266,7 @@ public class LandingGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				chat.remove(entryPanel);
-				messageStoreManager.getMessageStore(contact).removeMessage(message);
+				Main.getMessageStoreManager().getMessageStore(contact).removeMessage(message);
 				chat.revalidate();
 				chat.repaint();
 			}
@@ -298,8 +293,8 @@ public class LandingGUI extends JFrame {
 		entryPanel.setPreferredSize(new Dimension(350, 50));
 
         chat.add(entryPanel);
-		messageStoreManager.getMessageStore(contact).addMessage(message);
-		messageStoreManager.getMessageStore(contact).saveMessages();
+		Main.getMessageStoreManager().getMessageStore(contact).addMessage(message);
+		Main.getMessageStoreManager().getMessageStore(contact).saveMessages();
     }
 	
 	/**

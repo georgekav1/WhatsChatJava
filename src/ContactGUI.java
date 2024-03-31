@@ -279,13 +279,23 @@ public class ContactGUI extends JFrame {
         messageBuilder.append("Profile Information:\n");
         messageBuilder.append("Name: ").append(contact.getName()).append("\n");
         messageBuilder.append("Phone Number: ").append(contact.getPhoneNumber()).append("\n\n");
-        
-        messageBuilder.append("Recent Chat Messages:\n");
 
-        for(Message message : Main.messageStoreManager.getMessageStore(contact).getMessages()) {
-            if(message.getContactName().equals(contact.getName())) {
-                messageBuilder.append(message.getContactName()).append("\n");
+        
+        if(Main.getMessageStoreManager().getMessageStore(contact).getMessageLength() > 0) {
+            messageBuilder.append("Recent Chat Messages:\n");
+            int i = 0;
+            for(Message message : Main.messageStoreManager.getMessageStore(contact).getMessages()) {
+                if(i == 3) {
+                    break;
+                }
+
+                if(message.getContactName().equals(contact.getName())) {
+                    messageBuilder.append(message.getContent()).append("\n");
+                    i++;
+                }
             }
+        } else {
+            messageBuilder.append("No recent messages");
         }
 
         JOptionPane.showMessageDialog(this, messageBuilder.toString(), "Contact Information", JOptionPane.INFORMATION_MESSAGE);
