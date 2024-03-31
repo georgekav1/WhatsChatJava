@@ -103,6 +103,7 @@ public class LandingGUI extends JFrame {
 
 		if(contacts.size() > 0) {
 			for(Contact contact : contacts) {
+				messageStoreManager.getMessageStore(contact).loadMessages();
 				// TODO: Check is the user has an existing chat. Right now all contacts are loaded.
 				System.out.println(messageStoreManager.getMessageStore(contact).getMessageLength());
 				if(messageStoreManager.getMessageStore(contact).getMessageLength() > 0) {
