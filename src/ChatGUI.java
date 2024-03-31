@@ -16,6 +16,7 @@ public class ChatGUI extends JFrame {
     private JPanel buttonPanel;
     private ContactManager contactManager;
     private LandingGUI landingGUI;
+    private Message message;
 
     public ChatGUI(ContactGUI contactGUI, ContactManager contactManager, LandingGUI landingGUI) {  
         this.contactManager = contactManager;
@@ -103,14 +104,17 @@ public class ChatGUI extends JFrame {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //String message = messageArea.getText();
+
+                String message1 = messageArea.getText();
                 Date currentDate = new Date();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 String currentDateTime = dateFormat.format(currentDate);
                 Message message = new Message("You", currentDateTime, false, false, messageArea.getText());
 
                 landingGUI.addChatToList(contact);
-                landingGUI.addChatEntry(message, contact,true);
+
+                landingGUI.addChatEntry(message, contact, true); 
+
                 landingGUI.chatPanel.revalidate(); 
                 landingGUI.chatPanel.repaint();  
             }
@@ -121,8 +125,4 @@ public class ChatGUI extends JFrame {
         JOptionPane.showMessageDialog(this, panel, "Send Message to " + contact.getName(),
                 JOptionPane.PLAIN_MESSAGE);
     }
-
-
-
-    
 }

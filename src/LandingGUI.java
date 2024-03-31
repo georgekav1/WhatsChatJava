@@ -17,11 +17,14 @@ import java.util.Optional;
 public class LandingGUI extends JFrame {
 	private Profile userProfile;
 	private JPanel buttonPanel;
-	JPanel chatPanel;
+
+	public JPanel chatPanel;
+
 	private JPanel chat;
 	private ContactManager contactManager;
 	private JSplitPane splitPane;
 	private MessageStoreManager messageStoreManager;
+	private Message message;
 
 	/**
 	 * Method to display the GUI with all of its properties.
@@ -228,7 +231,6 @@ public class LandingGUI extends JFrame {
         JLabel readLabel = new JLabel(message.isRead() ? "Read" : "Unread");
 
 		JPanel menuPanel = new JPanel(new GridBagLayout());
-
 
 		JButton deleteButton = new JButton("Delete");
 		JButton likeButton = new JButton(!message.isLiked() ? "Like ♡" : "Unlike ❤");
