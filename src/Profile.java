@@ -117,7 +117,7 @@ import java.time.LocalDate;
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(this);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle file write errors as needed
+            e.printStackTrace(); 
         }
     }
     
@@ -126,7 +126,7 @@ import java.time.LocalDate;
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             userProfile = (Profile) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace(); // Handle file read errors or missing file as needed
+            e.printStackTrace(); 
         }
         return userProfile;
     }

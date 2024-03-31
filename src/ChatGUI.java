@@ -18,6 +18,13 @@ public class ChatGUI extends JFrame {
     private final LandingGUI landingGUI;
     private Message message;
 
+    /**
+     * Class that displays the GUI and allows the user to interact with the system in order to create a chat.
+     * 
+     * @param contactGUI
+     * @param contactManager
+     * @param landingGUI
+     */
     public ChatGUI(ContactGUI contactGUI, ContactManager contactManager) {
         this.contactManager = contactManager;
         this.landingGUI = Main.getFrame();
@@ -66,6 +73,10 @@ public class ChatGUI extends JFrame {
         landingPage.setVisible(true);
     }       
     
+    /**
+     * Contains the functionality to write out a message to a selected contact.
+     * @param contact
+     */
     public void messageContact(Contact contact) {
         landingGUI.chatPanel(contact); 
 
