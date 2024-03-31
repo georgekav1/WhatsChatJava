@@ -19,7 +19,8 @@ public class LandingGUI extends JFrame {
 	private JPanel chat;
 	private ContactManager contactManager;
 	private JSplitPane splitPane;
-	
+	private MessageStoreManager messageStoreManager;
+
 	/**
 	 * Method to display the GUI with all of its properties.
 	 */
@@ -33,7 +34,8 @@ public class LandingGUI extends JFrame {
 		JMenu title = new JMenu("WhatsChat");
 
 		contactManager = new ContactManager();
-				
+		messageStoreManager = new MessageStoreManager();
+
 //		chatPanel();
 		chatListPanel();
 		buttonPanel();
@@ -48,7 +50,7 @@ public class LandingGUI extends JFrame {
 
 	public void addSplitPane() {
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(buttonPanel), new JScrollPane(chatPanel));
-		splitPane.setDividerLocation(330);
+		splitPane.setDividerLocation(300);
 
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(splitPane, BorderLayout.CENTER);
@@ -111,6 +113,7 @@ public class LandingGUI extends JFrame {
 		contactButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				messageStoreManager.getMessageStore(contact).loadMessages();
 				chatPanel(contact);
 				splitPane.setRightComponent(new JScrollPane(chatPanel));
 				splitPane.setDividerLocation(300);
@@ -141,17 +144,20 @@ public class LandingGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				chatListPanel();
-				splitPane.setLeftComponent(new JScrollPane(chatPanel));
-				splitPane.setDividerLocation(400);
+				splitPane.setRightComponent(new JScrollPane(chatPanel));
+				splitPane.setDividerLocation(300);
+				messageStoreManager.getMessageStore(contact).saveMessages();
 			}
 		});
 
 
         // Simulate chat entries with labels
-        addChatEntry(contact.getName(), "Hello there!", "10:00 AM", true);
-        addChatEntry(contact.getName(), "Hi, how are you?", "11:30 AM", false);
-        addChatEntry(contact.getName(), "Good morning!", "12:15 PM", true);
-        addChatEntry(contact.getName(), "What's up?", "1:00 PM", false);
+//        addChatEntry(contact.getName(), "Hello there!", "10:00 AM", true);
+//        addChatEntry(contact.getName(), "Hi, how are you?", "11:30 AM", false);
+//        addChatEntry(contact.getName(), "Good morning!", "12:15 PM", true);
+//        addChatEntry(contact.getName(), "What's up?", "1:00 PM", false);
+		Message testMessage = new Message(contact.getName(), new Date(), false, false, "hitya");
+		addChatEntry(testMessage, contact);
 
 		JPanel inputPanel = new JPanel(new GridBagLayout());
 		JTextField chatInput = new JTextField();
@@ -164,11 +170,9 @@ public class LandingGUI extends JFrame {
 				String message = chatInput.getText();
 
 				Date currentDate = new Date();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-				String currentDateTime = dateFormat.format(currentDate);
-
-				addChatEntry("You", message, currentDateTime, true);
+				Message newMessage = new Message("You", currentDate, false, false, message);
+				addChatEntry(newMessage, contact);
 				chatPanel.revalidate();
 				chatPanel.repaint();
 			}
@@ -203,32 +207,38 @@ public class LandingGUI extends JFrame {
 	/**
 	 * Method used to format and display the chats with each contact.
 	 * 
-	 * @param sender The contact that sent the message.
 	 * @param message The contents of the chat.
-	 * @param time The time the chat was sent.
-	 * @param read Whether the chat has been read or not.
+	 * @param contact The contact that sent the message.
 	 */
-	private void addChatEntry(String sender, String message, String time, boolean read) {
+	private void addChatEntry(Message message, Contact contact) {
         JPanel entryPanel = new JPanel(new BorderLayout());
-        JLabel senderLabel = new JLabel(sender + ": ");
-        JLabel messageLabel = new JLabel(message);
-        JLabel timeLabel = new JLabel(time);
-        JLabel readLabel = new JLabel(read ? "Read" : "Unread");
+        JLabel senderLabel = new JLabel(message.getContactName() + ": ");
+        JLabel messageLabel = new JLabel(message.getContent());
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+		String currentDateTime = dateFormat.format(message.getTime());
+        JLabel timeLabel = new JLabel(currentDateTime);
+        JLabel readLabel = new JLabel(message.isRead() ? "Read" : "Unread");
 
 		JPanel menuPanel = new JPanel(new GridBagLayout());
 
 
 		JButton deleteButton = new JButton("Delete");
-		JButton likeButton = new JButton("Like ♡");
+		JButton likeButton = new JButton(message.isLiked() ? "Like ♡" : "Unlike ❤");
 
 		likeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				messageStoreManager.getMessageStore(contact).removeMessage(message);
 				if(likeButton.getText().contains("Like")) {
 					likeButton.setText("Unlike ❤");
+					message.setLiked(true);
 				} else {
 					likeButton.setText("Like ♡");
+					message.setLiked(false);
 				}
+				messageStoreManager.getMessageStore(contact).addMessage(message);
 			}
 		});
 
@@ -236,6 +246,7 @@ public class LandingGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				chat.remove(entryPanel);
+				messageStoreManager.getMessageStore(contact).removeMessage(message);
 				chat.revalidate();
 				chat.repaint();
 			}
@@ -262,6 +273,7 @@ public class LandingGUI extends JFrame {
 		entryPanel.setPreferredSize(new Dimension(350, 50));
 
         chat.add(entryPanel);
+		messageStoreManager.getMessageStore(contact).addMessage(message);
     }
 	
 	/**

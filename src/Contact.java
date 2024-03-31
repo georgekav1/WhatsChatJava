@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * The Contact class represents a contact with a name and phone number.
