@@ -1,10 +1,5 @@
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.time.LocalDate;
 
 /**
@@ -114,6 +109,15 @@ import java.time.LocalDate;
     }
         
     public void saveProfile() {
+        File file = new File(filename);
+        if(!file.exists()) {
+            try
+            {
+                file.createNewFile();
+            } catch(IOException e) {
+                System.out.println("Error occured");
+            }
+        }
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(this);
         } catch (IOException e) {
@@ -123,6 +127,15 @@ import java.time.LocalDate;
     
     public static Profile loadProfile() {
         Profile userProfile = null;
+        File file = new File(filename);
+        if(!file.exists()) {
+            try
+            {
+                file.createNewFile();
+            } catch(IOException e) {
+                System.out.println("Error occured");
+            }
+        }
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             userProfile = (Profile) in.readObject();
         } catch (IOException | ClassNotFoundException e) {

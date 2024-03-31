@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WhatsChat:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="WhatsChat.jar">
+      <element id="module-output" name="WhatsChat" />
+    </root>
+  </artifact>
+</component>

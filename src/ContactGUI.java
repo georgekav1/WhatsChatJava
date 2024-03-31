@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -280,7 +281,7 @@ public class ContactGUI extends JFrame {
         messageBuilder.append("Name: ").append(contact.getName()).append("\n");
         messageBuilder.append("Phone Number: ").append(contact.getPhoneNumber()).append("\n\n");
 
-        
+
         if(Main.getMessageStoreManager().getMessageStore(contact).getMessageLength() > 0) {
             messageBuilder.append("Recent Chat Messages:\n");
             int i = 0;

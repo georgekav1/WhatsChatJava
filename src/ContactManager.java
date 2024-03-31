@@ -1,9 +1,4 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -112,6 +107,16 @@ import java.util.Iterator;
      */
     public List<Contact> loadContactsFromFile() {
         List<Contact> loadedContacts = new ArrayList<>();
+        File file = new File(contactsFile);
+        if(!file.exists()) {
+            try
+            {
+                file.createNewFile();
+            } catch(IOException e) {
+                System.out.println("Error occured");
+            }
+        }
+
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(contactsFile))) {
             loadedContacts = (List<Contact>) ois.readObject();
         } catch (FileNotFoundException e) {
@@ -126,6 +131,15 @@ import java.util.Iterator;
      * Method used to save the contacts to contacts.txt
      */
     public void saveContactsToFile() {
+        File file = new File(contactsFile);
+        if(!file.exists()) {
+            try
+            {
+                file.createNewFile();
+            } catch(IOException e) {
+                System.out.println("Error occured");
+            }
+        }
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(contactsFile, false))) {
             oos.writeObject(contacts);
         } catch (IOException e) {
