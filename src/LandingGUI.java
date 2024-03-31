@@ -17,7 +17,9 @@ import java.util.Optional;
 public class LandingGUI extends JFrame {
 	private Profile userProfile;
 	private JPanel buttonPanel;
+
 	public JPanel chatPanel;
+
 	private JPanel chat;
 	private ContactManager contactManager;
 	private JSplitPane splitPane;

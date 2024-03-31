@@ -3,6 +3,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,8 +58,31 @@ public class ChatGUI extends JFrame {
             // TODO: check the message files for contacts which DO NOT have any chats and then add them to a list here
         //}
 
+        List<Contact> contactsWithoutChats = new ArrayList<>();
+
+        for (Contact contact : contactManager.getContacts()) {
+            boolean hasChat = false;
+
+            // Retrieve the message store for the current contact using an instance of MessageStoreManager
+            MessageStoreManager messageStoreManager = new MessageStoreManager();
+            MessageStore messageStore = messageStoreManager.getMessageStore(contact);
+
+            // Iterate over the messages associated with the current contact
+            for (Message message : messageStore.getMessages()) {
+                // If any message is found for this contact, set hasChat to true and break the loop
+                if (message.getContactName().equals(contact.getName())) {
+                    hasChat = true;
+                    break;
+                }
+            }
+
+            // If no chat is found for this contact, add it to the list
+            if (!hasChat) {
+                contactsWithoutChats.add(contact);
+            }
+        }
     }
-      
+
 	/**
      * Method used to navigate back to the LandingGUI.
      */
@@ -80,13 +104,17 @@ public class ChatGUI extends JFrame {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 String message1 = messageArea.getText();
                 Date currentDate = new Date();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                String currentDateTime = dateFormat.format(currentDate);    
-                
+                String currentDateTime = dateFormat.format(currentDate);
+                Message message = new Message("You", currentDateTime, false, false, messageArea.getText());
+
                 landingGUI.addChatToList(contact);
+
                 landingGUI.addChatEntry(message, contact, true); 
+
                 landingGUI.chatPanel.revalidate(); 
                 landingGUI.chatPanel.repaint();  
             }

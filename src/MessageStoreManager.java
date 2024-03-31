@@ -11,7 +11,7 @@ public class MessageStoreManager {
 
         for(Contact contact : contactManager.getContacts()) {
             MessageStore msgStore = new MessageStore(contact);
-            msgStore.loadMessages();
+            //msgStore.loadMessages();
             contactStores.put(contact, msgStore);
         }
     }
