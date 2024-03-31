@@ -135,4 +135,8 @@ import java.util.Iterator;
         }
     }
 
+	//public List<String> getRecentChatMessages(Contact contact, int i) {
+		//return recentMessages;
+	//}
+
 }
