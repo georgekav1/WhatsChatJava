@@ -39,6 +39,10 @@ public class LandingGUI extends JFrame {
 
 		contactManager = new ContactManager();
 
+		for(Contact contact : contactManager.contacts) {
+			messageStoreManager.getMessageStore(contact).loadMessages();
+		}
+
 //		chatPanel();
 		chatListPanel();
 		buttonPanel();

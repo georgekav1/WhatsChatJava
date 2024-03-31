@@ -48,6 +48,7 @@ public class MessageStore {
 
         try {
             File file = new File(fileName);
+
             if(!file.exists()) {
                 file.createNewFile();
                 return;
@@ -58,22 +59,20 @@ public class MessageStore {
             nextLine = bufferedReader.readLine();
 
             while(nextLine != null) {
-                if(nextLine.contains(contact.getName())) {
-                    String[] splitString = nextLine.split(";", 6);
-                    Message newMsg = new Message();
+                String[] splitString = nextLine.split(";", 6);
+                Message newMsg = new Message();
 
-                    if (splitString.length == 5 || splitString.length == 6) {
-                        newMsg.setContactName(splitString[0]);
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        Date date = format.parse(splitString[1]);
-                        String dateTime = format.format(date);
+                if (splitString.length == 5 || splitString.length == 6) {
+                    newMsg.setContactName(splitString[0]);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date date = format.parse(splitString[1]);
+                    String dateTime = format.format(date);
 
-                        newMsg.setTime(dateTime);
-                        newMsg.setLiked(Boolean.parseBoolean(splitString[2]));
-                        newMsg.setRead(Boolean.parseBoolean(splitString[3]));
-                        newMsg.setContent(splitString[4]);
-                        addMessage(newMsg);
-                    }
+                    newMsg.setTime(dateTime);
+                    newMsg.setLiked(Boolean.parseBoolean(splitString[2]));
+                    newMsg.setRead(Boolean.parseBoolean(splitString[3]));
+                    newMsg.setContent(splitString[4]);
+                    addMessage(newMsg);
                 }
 
                 nextLine = bufferedReader.readLine();
