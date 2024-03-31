@@ -110,7 +110,7 @@ import java.util.Iterator;
      * 
      * @return loadedContacts The contacts taken from contacts.txt
      */
-    private List<Contact> loadContactsFromFile() {
+    public List<Contact> loadContactsFromFile() {
         List<Contact> loadedContacts = new ArrayList<>();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(contactsFile))) {
             loadedContacts = (List<Contact>) ois.readObject();
@@ -125,7 +125,7 @@ import java.util.Iterator;
     /**
      * Method used to save the contacts to contacts.txt
      */
-    private void saveContactsToFile() {
+    public void saveContactsToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(contactsFile, false))) {
             oos.writeObject(contacts);
         } catch (IOException e) {

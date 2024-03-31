@@ -51,6 +51,15 @@ public class LandingGUI extends JFrame {
 		addSplitPane();
 	}
 
+	public void refreshContactListPanel() {
+		chatListPanel(); // Rebuild the chat list panel
+		splitPane.setRightComponent(new JScrollPane(chatPanel)); // Update the split pane
+		splitPane.setDividerLocation(300); // You might need to adjust this
+		this.revalidate(); // Refresh the entire JFrame
+		this.repaint();
+	}
+
+
 	public void addSplitPane() {
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(buttonPanel), new JScrollPane(chatPanel));
 		splitPane.setDividerLocation(300);
@@ -100,13 +109,6 @@ public class LandingGUI extends JFrame {
 		});	
 	}
 
-	public void refreshChatPanel() {
-		chatListPanel();
-		chatPanel.revalidate();
-		chatPanel.repaint();
-		splitPane.setRightComponent(chatPanel);
-	}
-
 	public void chatListPanel() {
 		
 		List<Contact> contacts = contactManager.getContacts();
@@ -114,9 +116,6 @@ public class LandingGUI extends JFrame {
 
 		if(contacts.size() > 0) {
 			for(Contact contact : contacts) {
-				messageStoreManager.getMessageStore(contact).loadMessages();
-				// TODO: Check is the user has an existing chat. Right now all contacts are loaded.
-				System.out.println(messageStoreManager.getMessageStore(contact).getMessageLength());
 				if(messageStoreManager.getMessageStore(contact).getMessageLength() > 0) {
 					addChatToList(contact);
 				}
@@ -296,8 +295,8 @@ public class LandingGUI extends JFrame {
 		entryPanel.setPreferredSize(new Dimension(350, 50));
 
         chat.add(entryPanel);
-		messageStoreManager.getMessageStore(contact).saveMessages();
 		messageStoreManager.getMessageStore(contact).addMessage(message);
+		messageStoreManager.getMessageStore(contact).saveMessages();
     }
 	
 	/**
@@ -323,9 +322,8 @@ public class LandingGUI extends JFrame {
 	 */
 	public void openChatsGUI() {
 		ContactGUI contactGUI = new ContactGUI(contactManager);
-		LandingGUI landingGUI = new LandingGUI();
 
-		ChatGUI chatsGUI = new ChatGUI(contactGUI, contactManager, landingGUI);
+		ChatGUI chatsGUI = new ChatGUI(contactGUI, contactManager);
 		chatsGUI.setVisible(true);
 	}
 		

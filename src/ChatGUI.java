@@ -15,12 +15,12 @@ import javax.swing.*;
 public class ChatGUI extends JFrame {
     private JPanel buttonPanel;
     private ContactManager contactManager;
-    private LandingGUI landingGUI;
+    private final LandingGUI landingGUI;
     private Message message;
 
-    public ChatGUI(ContactGUI contactGUI, ContactManager contactManager, LandingGUI landingGUI) {  
+    public ChatGUI(ContactGUI contactGUI, ContactManager contactManager) {
         this.contactManager = contactManager;
-        this.landingGUI = landingGUI;
+        this.landingGUI = Main.getFrame();
 
     	setTitle("WhatsChat");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -86,13 +86,12 @@ public class ChatGUI extends JFrame {
 
 				Message newMessage = new Message("You", currentDateTime, false, false, message);
 				landingGUI.addChatEntry(newMessage, contact);
-				landingGUI.addChatToList(contact);
+                Main.messageStoreManager.getMessageStore(contact).saveMessages();
 
-				landingGUI.chatListPanel();
-                landingGUI.chatPanel.revalidate();
-                landingGUI.chatPanel.repaint();
-                landingGUI.getSplitPane().setRightComponent(landingGUI.chatPanel);
-				Main.messageStoreManager.getMessageStore(contact).saveMessages();
+                System.out.println(Main.messageStoreManager.getMessageStore(contact).getMessageLength());
+
+                landingGUI.refreshContactListPanel();
+                dispose();
 			}
 		});
 

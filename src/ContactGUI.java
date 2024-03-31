@@ -160,7 +160,7 @@ public class ContactGUI extends JFrame {
             if (selectedContactName != null) {
                 boolean removed = contactManager.removeContactByName(selectedContactName);
                 if (removed) {
-                    refreshContactButtons(); 
+                    refreshContactButtons();
                     JOptionPane.showMessageDialog(this, "Contact removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to remove contact.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -259,6 +259,7 @@ public class ContactGUI extends JFrame {
      */
     public void returnToHome() {
         dispose();
+        contactManager.saveContactsToFile();
         LandingGUI landingPage = new LandingGUI();
         landingPage.setVisible(true);
     }

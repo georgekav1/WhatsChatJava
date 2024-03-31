@@ -48,7 +48,10 @@ public class MessageStore {
 
         try {
             File file = new File(fileName);
-            file.createNewFile();
+            if(!file.exists()) {
+                file.createNewFile();
+                return;
+            }
             fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
 
@@ -58,7 +61,6 @@ public class MessageStore {
                 if(nextLine.contains(contact.getName())) {
                     String[] splitString = nextLine.split(";", 6);
                     Message newMsg = new Message();
-
 
                     if (splitString.length == 5 || splitString.length == 6) {
                         newMsg.setContactName(splitString[0]);
@@ -100,7 +102,10 @@ public class MessageStore {
 
         try {
             File file = new File(fileName);
-            file.createNewFile();
+            if(!file.exists()) {
+                file.createNewFile();
+                return;
+            }
             outputStream = new FileOutputStream(file, false);
             printWriter = new PrintWriter(outputStream);
 
@@ -108,7 +113,6 @@ public class MessageStore {
                 String line = message.getContactName() + ";" + message.getTime() + ";" + message.isLiked() + ";" + message.isRead() + ";" + message.getContent();
 
                 printWriter.println(line);
-                System.out.println(line);
             }
         } catch(FileNotFoundException e) {
             System.out.println("File not found");
