@@ -21,7 +21,7 @@ public class LandingGUI extends JFrame {
 	private JPanel chat;
 	private ContactManager contactManager;
 	private JSplitPane splitPane;
-	private MessageStoreManager messageStoreManager;
+	private final MessageStoreManager messageStoreManager = Main.getMessageStoreManager();
 
 	/**
 	 * Method to display the GUI with all of its properties.
@@ -36,7 +36,6 @@ public class LandingGUI extends JFrame {
 		JMenu title = new JMenu("WhatsChat");
 
 		contactManager = new ContactManager();
-		messageStoreManager = new MessageStoreManager();
 
 //		chatPanel();
 		chatListPanel();

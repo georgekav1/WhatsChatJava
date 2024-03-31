@@ -10,9 +10,11 @@ public class MessageStore {
     private final String fileName = "messages.txt";
     private Contact contact;
     private ContactManager contactManager;
+    private final MessageStoreManager messageStoreManager;
 
 
     public MessageStore(Contact contact) {
+        messageStoreManager = Main.getMessageStoreManager();
         messages = new HashSet();
         this.contact = contact;
         contactManager = new ContactManager();
@@ -48,10 +50,11 @@ public class MessageStore {
 
             while(nextLine != null) {
                 if(nextLine.contains(contact.getName())) {
-                    String[] splitString = nextLine.split(";", 5);
+                    String[] splitString = nextLine.split(";", 6);
                     Message newMsg = new Message();
 
-                    if (splitString.length == 5) {
+
+                    if (splitString.length == 5 || splitString.length == 6) {
                         newMsg.setContactName(splitString[0]);
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         Date date = format.parse(splitString[1]);
@@ -64,7 +67,7 @@ public class MessageStore {
                         addMessage(newMsg);
                     }
                 } else if(nextLine.contains("You")) {
-                    String[] splitString = nextLine.split(";", 6);
+                    String[] splitString = nextLine.split(";");
                     Message newMsg = new Message();
 
                     if (splitString.length == 6) {
@@ -81,10 +84,11 @@ public class MessageStore {
                         String contactString = splitString[5];
                         Contact contact = contactManager.getContact(contactString);
 
-                        MessageStoreManager messageStoreManager = new MessageStoreManager();
-
                         if(contact != null) {
-                            messageStoreManager.getMessageStore(contact).addMessage(newMsg);
+                            MessageStoreManager msgStoreMan = Main.getMessageStoreManager();
+                            if(msgStoreMan != null) {
+                                msgStoreMan.getMessageStore(contact).addMessage(newMsg);
+                            }
                         }
                     }
                 }
@@ -112,7 +116,7 @@ public class MessageStore {
         PrintWriter printWriter = null;
 
         try {
-            outputStream = new FileOutputStream(fileName);
+            outputStream = new FileOutputStream(fileName, true);
             printWriter = new PrintWriter(outputStream);
 
             for(Message message : messages) {
