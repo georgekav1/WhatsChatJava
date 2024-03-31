@@ -95,30 +95,29 @@ public class ChatGUI extends JFrame {
     public void messageContact(Contact contact) {
         landingGUI.chatPanel(contact); 
 
-        JTextArea messageArea = new JTextArea(5, 30);
-        JScrollPane scrollPane = new JScrollPane(messageArea);
+        JTextArea chatInput = new JTextArea(5, 30);
+        JScrollPane scrollPane = new JScrollPane(chatInput);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(scrollPane, BorderLayout.CENTER);
 
         JButton submitBtn = new JButton("Send");
         submitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String message = chatInput.getText();
 
-                String message1 = messageArea.getText();
-                Date currentDate = new Date();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                String currentDateTime = dateFormat.format(currentDate);
-                Message message = new Message("You", currentDateTime, false, false, messageArea.getText());
+				Date currentDate = new Date();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				String currentDateTime = dateFormat.format(currentDate);
 
-                landingGUI.addChatToList(contact);
-
-                landingGUI.addChatEntry(message, contact, true); 
-
-                landingGUI.chatPanel.revalidate(); 
-                landingGUI.chatPanel.repaint();  
-            }
-        });
+				Message newMessage = new Message("You", currentDateTime, false, false, message);
+				landingGUI.addChatEntry(newMessage, contact, true);
+				landingGUI.chatPanel.revalidate();
+				landingGUI.chatPanel.repaint();
+				landingGUI.messageStoreManager.getMessageStore(contact).saveMessages();
+				landingGUI.addChatToList(contact);
+			}
+		});
 
         panel.add(submitBtn, BorderLayout.SOUTH);
 

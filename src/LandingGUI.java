@@ -23,7 +23,7 @@ public class LandingGUI extends JFrame {
 	private JPanel chat;
 	private ContactManager contactManager;
 	private JSplitPane splitPane;
-	private MessageStoreManager messageStoreManager;
+	public MessageStoreManager messageStoreManager;
 	private Message message;
 
 	/**
@@ -99,6 +99,7 @@ public class LandingGUI extends JFrame {
 	}
 
 	public void chatListPanel() {
+		
 		List<Contact> contacts = contactManager.getContacts();
 		chatPanel = new JPanel(new GridLayout(contacts.size(), 1, 10, 10));
 
@@ -118,7 +119,7 @@ public class LandingGUI extends JFrame {
 		contactButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				messageStoreManager.getMessageStore(contact).loadMessages();
+				//messageStoreManager.getMessageStore(contact).loadMessages();
 				chatPanel(contact);
 				splitPane.setRightComponent(new JScrollPane(chatPanel));
 				splitPane.setDividerLocation(300);
@@ -151,7 +152,6 @@ public class LandingGUI extends JFrame {
 				chatListPanel();
 				splitPane.setRightComponent(new JScrollPane(chatPanel));
 				splitPane.setDividerLocation(300);
-				messageStoreManager.getMessageStore(contact).saveMessages();
 			}
 		});
 
@@ -187,6 +187,7 @@ public class LandingGUI extends JFrame {
 				addChatEntry(newMessage, contact, true);
 				chatPanel.revalidate();
 				chatPanel.repaint();
+				messageStoreManager.getMessageStore(contact).saveMessages();
 			}
 		});
 
@@ -214,6 +215,8 @@ public class LandingGUI extends JFrame {
 
 		inputPanel.add(closeButton, gbc);
 		chatPanel.add(inputPanel);
+		
+
 	}
 	
 	/**
@@ -286,6 +289,7 @@ public class LandingGUI extends JFrame {
 		entryPanel.setPreferredSize(new Dimension(350, 50));
 
         chat.add(entryPanel);
+		messageStoreManager.getMessageStore(contact).saveMessages();
 		messageStoreManager.getMessageStore(contact).addMessage(message);
     }
 	
