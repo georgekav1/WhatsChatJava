@@ -5,40 +5,69 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ * Class that acts as a database for the messages.
+ */
 public class MessageStore {
     private HashSet<Message> messages;
     private Contact contact;
     private ContactManager contactManager;
     private final MessageStoreManager messageStoreManager;
 
-
+    /**
+     * Constructor for MessageStore.
+     * @param contact the contact to send a message to.
+     */
     public MessageStore(Contact contact) {
         messageStoreManager = Main.getMessageStoreManager();
         messages = new HashSet();
         this.contact = contact;
         contactManager = new ContactManager();
     }
-
+    
+    /**
+     * Returns the Set of messages.
+     * @return messages The list of messages.
+     */
     public HashSet<Message> getMessages() {
         return messages;
     }
 
+    /**
+     * Adds a message to a chat.
+     * @param message The message details.
+     */
     public void addMessage(Message message) {
         messages.add(message);
     }
 
+    /**
+     * Removes a message from the chat.
+     * @param message The message details.
+     */
     public void removeMessage(Message message) {
         messages.remove(message);
     }
 
+    /**
+     * Gets the tool to cycle through the messages.
+     * @return messages The tool to cycle through the messages.
+     */
     public Iterator<Message> getIterator() {
         return messages.iterator();
     }
 
+    /**
+     * The tool to get the length of the message.
+     * @return The size of a message.
+     */
     public int getMessageLength() {
         return messages.size();
     }
 
+    /**
+     * Method to load messages from a .txt file onto the program.
+     */
     public void loadMessages() {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
@@ -95,6 +124,9 @@ public class MessageStore {
         }
     }
 
+    /**
+     *  Method to save messages to a .txt file 
+     */
     public void saveMessages() {
         FileOutputStream outputStream = null;
         PrintWriter printWriter = null;
