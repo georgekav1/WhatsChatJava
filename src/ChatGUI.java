@@ -46,9 +46,11 @@ public class ChatGUI extends JFrame {
 
         List<Contact> contacts = contactManager.getContacts();
         for (Contact contact : contacts) {
-            JButton contactButton = new JButton(contact.getName());
-            contactButton.addActionListener(e -> messageContact(contact));
-            buttonPanel.add(contactButton);
+            if(Main.messageStoreManager.getMessageStore(contact).getMessageLength() < 1) {
+                JButton contactButton = new JButton(contact.getName());
+                contactButton.addActionListener(e -> messageContact(contact));
+                buttonPanel.add(contactButton);
+            }
         }
 
         getContentPane().add(staticLabel, BorderLayout.NORTH);
@@ -57,30 +59,6 @@ public class ChatGUI extends JFrame {
         //for(Contact contact : contactManager.getContacts()) {
             // TODO: check the message files for contacts which DO NOT have any chats and then add them to a list here
         //}
-
-        List<Contact> contactsWithoutChats = new ArrayList<>();
-
-        for (Contact contact : contactManager.getContacts()) {
-            boolean hasChat = false;
-
-            // Retrieve the message store for the current contact using an instance of MessageStoreManager
-            MessageStoreManager messageStoreManager = new MessageStoreManager();
-            MessageStore messageStore = messageStoreManager.getMessageStore(contact);
-
-            // Iterate over the messages associated with the current contact
-            for (Message message : messageStore.getMessages()) {
-                // If any message is found for this contact, set hasChat to true and break the loop
-                if (message.getContactName().equals(contact.getName())) {
-                    hasChat = true;
-                    break;
-                }
-            }
-
-            // If no chat is found for this contact, add it to the list
-            if (!hasChat) {
-                contactsWithoutChats.add(contact);
-            }
-        }
     }
 
 	/**
@@ -114,7 +92,7 @@ public class ChatGUI extends JFrame {
 				landingGUI.addChatEntry(newMessage, contact, true);
 				landingGUI.chatPanel.revalidate();
 				landingGUI.chatPanel.repaint();
-				landingGUI.messageStoreManager.getMessageStore(contact).saveMessages();
+				Main.messageStoreManager.getMessageStore(contact).saveMessages();
 				landingGUI.addChatToList(contact);
 			}
 		});

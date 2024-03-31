@@ -36,6 +36,10 @@ public class MessageStore {
         return messages.iterator();
     }
 
+    public int getMessageLength() {
+        return messages.size();
+    }
+
     public void loadMessages() {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
