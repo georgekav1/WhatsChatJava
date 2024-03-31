@@ -7,7 +7,9 @@ import javax.swing.border.Border;
 import java.security.DigestException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class that serves as the main menu of the program, displaying chats and buttons used to access other GUIs.
@@ -156,8 +158,13 @@ public class LandingGUI extends JFrame {
 //        addChatEntry(contact.getName(), "Hi, how are you?", "11:30 AM", false);
 //        addChatEntry(contact.getName(), "Good morning!", "12:15 PM", true);
 //        addChatEntry(contact.getName(), "What's up?", "1:00 PM", false);
-		Message testMessage = new Message(contact.getName(), new Date(), false, false, "hitya");
-		addChatEntry(testMessage, contact);
+//		Message testMessage = new Message(contact.getName(), new Date(), false, false, "hitya");
+//		addChatEntry(testMessage, contact);
+
+		HashSet<Message> messages = messageStoreManager.getMessageStore(contact).getMessages();
+		for(Message message : messages) {
+			addChatEntry(message, contact, contact.getName().equals("You"));
+		}
 
 		JPanel inputPanel = new JPanel(new GridBagLayout());
 		JTextField chatInput = new JTextField();
@@ -170,9 +177,11 @@ public class LandingGUI extends JFrame {
 				String message = chatInput.getText();
 
 				Date currentDate = new Date();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				String currentDateTime = dateFormat.format(currentDate);
 
-				Message newMessage = new Message("You", currentDate, false, false, message);
-				addChatEntry(newMessage, contact);
+				Message newMessage = new Message("You", currentDateTime, false, false, message);
+				addChatEntry(newMessage, contact, true);
 				chatPanel.revalidate();
 				chatPanel.repaint();
 			}
@@ -210,22 +219,24 @@ public class LandingGUI extends JFrame {
 	 * @param message The contents of the chat.
 	 * @param contact The contact that sent the message.
 	 */
-	private void addChatEntry(Message message, Contact contact) {
+	private void addChatEntry(Message message, Contact contact, Boolean youOrNo) {
         JPanel entryPanel = new JPanel(new BorderLayout());
-        JLabel senderLabel = new JLabel(message.getContactName() + ": ");
+        JLabel senderLabel = new JLabel(youOrNo ? "You: " :message.getContactName()  + ": ");
         JLabel messageLabel = new JLabel(message.getContent());
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-		String currentDateTime = dateFormat.format(message.getTime());
-        JLabel timeLabel = new JLabel(currentDateTime);
+        JLabel timeLabel = new JLabel(message.getTime());
         JLabel readLabel = new JLabel(message.isRead() ? "Read" : "Unread");
 
 		JPanel menuPanel = new JPanel(new GridBagLayout());
 
 
 		JButton deleteButton = new JButton("Delete");
-		JButton likeButton = new JButton(message.isLiked() ? "Like ♡" : "Unlike ❤");
+		JButton likeButton = new JButton(!message.isLiked() ? "Like ♡" : "Unlike ❤");
+
+		if(youOrNo == true) {
+			message.setContactName("You");
+			message.setContact(Optional.ofNullable(contact.getName()));
+		}
 
 		likeButton.addActionListener(new ActionListener() {
 			@Override

@@ -34,6 +34,14 @@ import java.util.Iterator;
 		return contacts;
 	}
 
+    public Contact getContact(String name) {
+        for(Contact contact : contacts) {
+            if(contact.getName().equals(name)) return contact;
+        }
+
+        return null;
+    }
+
     /**
      * Method to add and save new contact.
      * 

@@ -1,17 +1,20 @@
 import java.util.Date;
+import java.util.Optional;
 
 public class Message {
     private String content;
     private String contactName;
-    private Date time;
+    private String time;
     private boolean liked;
     private boolean read;
+
+    private Optional<String> contact;
 
     public Message() {
         
     }
 
-    public Message(String contactName, Date time, boolean liked, boolean read, String content) {
+    public Message(String contactName, String time, boolean liked, boolean read, String content) {
         this.contactName = contactName;
         this.time = time;
         this.liked = liked;
@@ -35,11 +38,11 @@ public class Message {
         this.contactName = contactName;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -57,5 +60,13 @@ public class Message {
 
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    public Optional<String> getContact() {
+        return contact;
+    }
+
+    public void setContact(Optional<String> contact) {
+        this.contact = contact;
     }
 }
